@@ -80,13 +80,12 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://pocket-KD.github.io/categories/index.html">
+<meta property="og:title" content="口袋">
+<meta property="og:url" content="http://pocket-KD.github.io/index.html">
 <meta property="og:site_name" content="口袋">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-20T03:00:13.896Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
+<meta name="twitter:title" content="口袋">
 
 
 
@@ -116,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://pocket-KD.github.io/categories/">
+  <link rel="canonical" href="http://pocket-KD.github.io/">
 
 
 
 
 
-  <title>categories | 口袋</title>
+  <title>口袋</title>
   
 
 
@@ -141,7 +140,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -276,37 +276,152 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
+  <section id="posts" class="posts-expand">
+    
+      
 
-  <div id="posts" class="posts-expand">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://pocket-KD.github.io/2019/06/03/CentOS 7 搭建DNS服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="孟钰">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="口袋">
+    </span>
+
     
-    
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">categories</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/CentOS 7 搭建DNS服务器/" itemprop="url">CentOS 7 搭建dns服务器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T09:32:49+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
           
+            <p>####环境：<br>DNS服务器：CentOS 7<br>Client：kali<br>DNS Server：192.168.110.43<br>域名：test.com</p>
+<p>####关闭防火墙:<br>systemctl stop firewalld;    –临时关闭防火墙<br>systemctl disable firewalld;   –永久关闭防火墙</p>
+<p>####关闭selinux：<br>临时关闭：<br>setenforce 0<br>永久关闭：<br>vim  /etc/selinux/config<br>SELINUX=disabled</p>
+<p>reboot</p>
+<p>####（1）在DNS服务器上安装BIND<br>yum -y install bind*<br>（安装过显示“无需任何处理”）<br><img src="https://s2.ax1x.com/2019/08/16/mZMMYn.png" alt="mZMMYn.png"><br>安装好后查看r软件包<br>rpm -qa | grep ^bind<br><img src="https://s2.ax1x.com/2019/08/16/mZMtw4.png" alt="mZMtw4.png"></p>
+<p>####（2）启动DNS服务<br>  systemctl start named.service         –启动DNS服务<br>  systemctl enable named.service     –设置为开机启动<br>    netstat -anlp | grep named             –查看监听端口为53<br><img src="https://s2.ax1x.com/2019/08/16/mZMsOO.png" alt="mZMsOO.png"><br>named默认监听TCP、UDP协议的53端口，以及TCP的539端口：其中UDP53端口一般对所有客户及开放，以提供解析服务；<br>TCP53端口一般只对特定从域名服务器开放，提高解析记录传输通道；TCP953端口默认只对本机开放，用于为rndc远程管理工具提供控制通道。</p>
+<p>#####配置文件的目录：<br>没有安装bind-chroot软件包<br>配置文件为/etc/named.conf<br>数据文件在/var/named目录下</p>
+<p>安装了bind-chroot软件包<br>配置文件为/var/named/chroot/etc/named.conf    –默认没有<br>数据文件在/var/named/chroot/var/named目录</p>
+<p>####（3）域名服务器的配置<br>配置步骤：<br>编辑/etc/named.rfc1912.zones     –记录你的域和域对应的数据文件在哪<br>编辑/var/named/data/*.zone        –就是数据文件，记录域名和IP的对应</p>
+<p>正向解析（将域名解析成IP）</p>
+<p>#####1）修改DNS服务的配置文件<br>vim /etc/named/conf<br>options {<br>               listen-on port 53 { 192.168.110.43; };    # 将127.0.0.1改为本机IP：192.168.110.43<br>               listen-on-v6 port 53 { ::1; };<br>                   directory       “/var/named”;<br>            dump-file       “/var/named/data/cache_dump.db”;<br>            statistics-file “/var/named/data/named_stats.txt”;<br>            memstatistics-file “/var/named/data/named_mem_stats.txt”;<br>                allow-query     { any; };               # 将localhost改为any,表示所有人都能对我的DNS服务进行查询</p>
+<p>#####2）添加域的信息写在子配置文件<br>vim /etc/named.rfc1912.zones    –文件最后添加正向解析数据文件的信息<br>zone “test.com” IN {<br>                type master;<br>                file “data/test.com.zone”;<br>          };<br><img src="https://s2.ax1x.com/2019/08/16/mZQV91.png" alt="mZQV91.png"></p>
+<p>#####3）编辑正向解析文件<br>vim /var/named/data/test.com.zone    –编辑正向解析文件（将域名解析成IP）<br>$TTL 1D                 # 缓存时间<br>        @       IN SOA  dns.test.com. dns.<a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>. (<br>                                                20190629      ; serial<br>                                                1D      ; refresh<br>                                                1H      ; retry<br>                                                1W      ; expire<br>                                                3H )    ; minimum<br>        @                       IN      NS      dns.test.com.                   # DNS服务器的域名地址<br>        dns.test.com.           IN      A       192.168.110.43           # DNS服务器的IP地址<br>        @                       IN      MX 10   mail.<a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>.        # 邮件服务器的域名地址<br>        mail.<a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>.      IN      A       192.168.8.4             # 邮件服务器IP地址<br>        <a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>.           IN      A       192.168.110.43          # 域名为test.com的IP地址<br>        ftp.test.com.           IN      A       192.168.8.3                   # 域名为ftp的IP地址<br><img src="https://s2.ax1x.com/2019/08/16/mZQlAH.png" alt="mZQlAH.png"></p>
+<p>####（4）客户端测试正向解析<br>（客户端必要能跟服务器端通信及关闭selinux）<br>vim /etc/resolv.conf                     –修改客户的DNS服务器<br>nameserver  192.168.110.43        –IP为服务器的IP</p>
+<p>dig   <a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a><br>nslooup  <a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a><br>host  <a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a><br><img src="https://s2.ax1x.com/2019/08/16/mZQ1Nd.png" alt="mZQ1Nd.png"></p>
+<p>正向解析成功！</p>
+<p>####（5）客户端测试</p>
+<p>#####1）修改DNS服务的配置文件<br> vim /etc/named.rfc1912.zones   –文件最后添加反向解析数据文件的信息<br><img src="https://s2.ax1x.com/2019/08/16/mZQtjf.png" alt="mZQtjf.png"></p>
+<p>#####2）编辑反向解析文件<br>vim /var/named/data/192.168.110.zone<br>$TTL 1D<br>    @       IN SOA  dns.test.com. dns.<a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>. (<br>                                        20190629      ; serial<br>                                        1D      ; refresh<br>                                        1H      ; retry<br>                                        1W      ; expire<br>                                        3H )    ; minimum<br>    @               IN      NS         dns.test.com.<br>    43              IN      PTR        dns.test.com.<br>    @               IN      MX 10      mail.<a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>.<br>    4               IN      PTR        mail.<a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>.<br>    43              IN      PTR        <a href="http://www.test.com" target="_blank" rel="noopener">www.test.com</a>.<br>    3               IN      PTR        ftp.test.com.<br><img src="https://s2.ax1x.com/2019/08/16/mZQ6g0.png" alt="mZQ6g0.png"></p>
+<p>systemctl  restart  named.service         –重启服务</p>
+<p>3）测试<br> nslookup  192.168.110.43<br>host   192.168.110.43<br><img src="https://s2.ax1x.com/2019/08/16/mZlSPA.png" alt="mZlSPA.png"></p>
+<p>解析成功！！</p>
+
+          
         
-      </div>
-      
-      
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
 
 
           </div>
@@ -314,10 +429,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -524,10 +635,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
